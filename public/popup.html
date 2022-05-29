@@ -7,7 +7,7 @@
 </head>
 <body>
   <div class="app">
-    <p class="counter-label">Counter</p>
+    <p class="title">How many asses would you like?</p>
     <div id="counter" class="counter"></div>
     <div class="button-container">
       <button id="decrementBtn" class="button">-</button>
@@ -16,8 +16,12 @@
 
     <hr class="divider" />
 
-    <p class="title">Chrome Extension is Ready!</p>
-    <p class="subtitle">Start by updating <code>popup.html</code></p>
+    <button id="assifyBtn" class="button">Assify</button>
+
+    <div class="page-load-checkbox">
+      <label for="onLoad">Execute on page load:</label>
+      <input style="margin-left: 4px;" type="checkbox" id="onLoad">
+    </div>
   </div>
 
   <script src="popup.js"></script>

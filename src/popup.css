@@ -42,7 +42,7 @@ body {
 code {
   font-size: 12px;
   font-family: inherit;
-  background-color: rgba(254, 237, 185, 0.3);
+  background-colr: rgba(254, 237, 185, 0.3);
   padding: 2px 4px;
   border-radius: 2px;
 }
@@ -67,13 +67,17 @@ code {
   padding: 10px 20px;
   margin-right: 4px;
   margin-left: 4px;
-  background-color: bisque;
-  font-size: 16px;
+  background-color: #1DB954;
+  font-size: 22px;
   cursor: pointer;
   border-radius: 4px;
   text-decoration: none;
   transition: transform 0.2s ease;
   user-select: none;
+  font-family: 'Proxima Nova';
+  text-shadow: 3px 3px 7px rgba(0,0,0,0.26);
+  color: white;
+  box-shadow: 5px 5px 9px 2px rgba(0,0,0,0.23);
 }
 
 .button:focus {
@@ -90,3 +94,10 @@ code {
   border: 0.5px dashed #000;
   opacity: 0.1;
 }
+
+.page-load-checkbox {
+  display: inline-flex;
+  align-items: center; 
+  margin-top: 12px;
+}
+

@@ -3,13 +3,7 @@
 import './popup.css';
 
 (function() {
-  // We will make use of Storage API to get and store `count` value
-  // More information on Storage API can we found at
-  // https://developer.chrome.com/extensions/storage
 
-  // To get storage access, we have to mention it in `permissions` property of manifest.json file
-  // More information on Permissions can we found at
-  // https://developer.chrome.com/extensions/declare_permissions
   const counterStorage = {
     get: cb => {
       chrome.storage.sync.get(['count'], result => {
@@ -29,6 +23,7 @@ import './popup.css';
   };
 
   function setupCounter(initialValue = 0) {
+
     document.getElementById('counter').innerHTML = initialValue;
 
     document.getElementById('incrementBtn').addEventListener('click', () => {
@@ -45,7 +40,9 @@ import './popup.css';
   }
 
   function updateCounter({ type }) {
+
     counterStorage.get(count => {
+
       let newCount;
 
       if (type === 'INCREMENT') {
@@ -58,34 +55,33 @@ import './popup.css';
 
       counterStorage.set(newCount, () => {
         document.getElementById('counter').innerHTML = newCount;
-
-        // Communicate with content script of
-        // active tab by sending a message
-        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-          const tab = tabs[0];
-
-          chrome.tabs.sendMessage(
-            tab.id,
-            {
-              type: 'COUNT',
-              payload: {
-                count: newCount,
-              },
-            },
-            response => {
-              console.log('Current count value passed to contentScript file');
-            }
-          );
-        });
+        sendCountMessage("COUNT", newCount);
       });
     });
   }
 
-  function restoreCounter() {
-    // Restore count value
+  function initialize() {
+    
+    document.getElementById('assifyBtn').addEventListener('click', () => {
+      assify();
+    });
+
+    let onLoadCheckbox = document.getElementById('onLoad');
+
+    chrome.storage.sync.get(['onLoad'], result => {
+      onLoadCheckbox.checked = result.onLoad;
+    })
+
+    onLoadCheckbox.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        chrome.storage.sync.set({"onLoad": true})
+      } else {
+        chrome.storage.sync.set({"onLoad": false})
+      }
+    });
+
     counterStorage.get(count => {
       if (typeof count === 'undefined') {
-        // Set counter value as 0
         counterStorage.set(0, () => {
           setupCounter(0);
         });
@@ -95,18 +91,33 @@ import './popup.css';
     });
   }
 
-  document.addEventListener('DOMContentLoaded', restoreCounter);
+  document.addEventListener('DOMContentLoaded', initialize);
 
-  // Communicate with background file by sending a message
-  chrome.runtime.sendMessage(
-    {
-      type: 'GREETINGS',
-      payload: {
-        message: 'Hello, my name is Pop. I am from Popup.',
-      },
-    },
-    response => {
-      console.log(response.message);
-    }
-  );
+  function assify() {
+
+    counterStorage.get(count => {
+      sendCountMessage("ASSIFY", count);
+    });
+  }
+
+  function sendCountMessage(type, count) {
+    
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      const tab = tabs[0];
+
+      chrome.tabs.sendMessage(
+        tab.id,
+        {
+          type: type,
+          payload: {
+            count: count,
+          },
+        },
+        response => {
+          console.log('Current count value passed to contentScript file');
+        }
+      );
+    });
+  }
+
 })();

@@ -1,39 +1,14 @@
-'use strict';
-
-// Content script file will run in the context of web page.
-// With content script you can manipulate the web pages using
-// Document Object Model (DOM).
-// You can also pass information to the parent extension.
-
-// We execute this script by making an entry in manifest.json file
-// under `content_scripts` property
-
-// For more information on Content Scripts,
-// See https://developer.chrome.com/extensions/content_scripts
-
-// Log `title` of current active web page
-const pageTitle = document.head.getElementsByTagName('title')[0].innerHTML;
-console.log(
-  `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
-);
-
-// Communicate with background file by sending a message
-chrome.runtime.sendMessage(
-  {
-    type: 'GREETINGS',
-    payload: {
-      message: 'Hello, my name is Con. I am from ContentScript.',
-    },
-  },
-  response => {
-    console.log(response.message);
-  }
-);
-
-// Listen for message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'COUNT') {
-    console.log(`Current count is ${request.payload.count}`);
+  
+  switch(request.type){
+    case 'COUNT':
+      console.log(`Current count is ${request.payload.count}`);
+      break;
+    case 'ASSIFY':
+      let count = request.payload.count;
+      console.log(`Execute assify with ${count} asses`);
+      assify(count);
+      break;
   }
 
   // Send an empty response
@@ -41,3 +16,42 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   sendResponse({});
   return true;
 });
+
+function assify(assCount) {
+
+  let div = document.querySelector('div');
+  let text = div.innerHTML;
+  let pos = require('pos'),
+      words = new pos.Lexer().lex(text),
+      tagger = new pos.Tagger(),
+      taggedWords = tagger.tag(words),
+      replaced = [];
+
+  for (let i in taggedWords) {
+
+      let taggedWord = taggedWords[i],
+          word = taggedWord[0],
+          tag = taggedWord[1],
+          replacement = /[A-Z]/.test(word.charAt(0)) ? 'Ass' : 'ass';
+
+      if(tag === 'JJ' && !replaced.includes(word)){
+          for(let c = 0; c < assCount; c++){
+            text = text.replace(new RegExp(word, 'g'), word + " " + replacement);
+          }
+
+          replaced.push(word);
+      }
+  }
+
+  div.innerHTML = text;
+}
+
+function onLoad(){
+  chrome.storage.sync.get(['count', 'onLoad'], result => {
+    if(result.onLoad){
+      assify(result.count);
+    }
+  });
+}
+
+onLoad();

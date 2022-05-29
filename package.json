@@ -7,6 +7,9 @@
     "watch": "webpack --mode=development --watch --config config/webpack.config.js",
     "build": "webpack --mode=production --config config/webpack.config.js"
   },
+  "dependencies": {
+    "pos": "^0.4.2"
+  },
   "devDependencies": {
     "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.7.1",
@@ -14,6 +17,7 @@
     "mini-css-extract-plugin": "^2.6.0",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "pos": "^0.4.2"
   }
 }
