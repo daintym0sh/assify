@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Assify",
-  "version": "0.1.0",
-  "description": "My Chrome Ass Extension",
+  "version": "0.0.1",
+  "description": "My Chrome Ass Extension. A fun way to spice up adjectives in a web page using the word ass.",
   "icons": {
     "16": "icons/icon_36.png"
   },
@@ -15,10 +15,6 @@
   ],
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "run_at": "document_idle",
       "js": [
         "contentScript.js"
       ]
