@@ -1,19 +1,20 @@
-# <img src="public/icons/icon_48.png" width="45" align="left"> Assify
+# <img src="public/icons/icon_128.png" width="50" align="left">ssify
 
-My Chrome Extension
+My Chrome Ass Extension
 
 ## Features
 
-- Feature 1
-- Feature 2
+- Find adjectives in a web page and insert the word "ass" 
+- Option to execute on page load
+- Set the number of asses added to an adjective 
 
 ## Install
 
-[**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
+Pending Chrome Store Review 
 
 ## Contribution
 
-Suggestions and pull requests are welcomed!.
+POS Part of Speech Tagger used to identify adjectives: https://github.com/dariusk/pos-js
 
 ---
 
