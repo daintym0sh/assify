@@ -1,3 +1,11 @@
+let count = 1;
+
+chrome.storage.sync.get(['count', 'onLoad'], result => {
+  if(result.onLoad){
+    execute(result.count)
+  }
+});
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   
   switch(request.type){
@@ -5,9 +13,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log(`Current count is ${request.payload.count}`);
       break;
     case 'ASSIFY':
-      let count = request.payload.count;
-      console.log(`Execute assify with ${count} asses`);
-      assify(count);
+      execute(request.payload.count)
       break;
   }
 
@@ -17,12 +23,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   return true;
 });
 
-function assify(assCount) {
+function execute(responseCount){
+  count = responseCount;
+  console.log(`Execute assify with ${count} asses`);
+  replaceNodeText(document.childNodes)
+}
 
-  let div = document.querySelector('div');
-  let text = div.innerHTML;
+function assifyNode(assCount, node) {
+
   let pos = require('pos'),
-      words = new pos.Lexer().lex(text),
+      words = new pos.Lexer().lex(node.textContent),
       tagger = new pos.Tagger(),
       taggedWords = tagger.tag(words),
       replaced = [];
@@ -36,22 +46,20 @@ function assify(assCount) {
 
       if(tag === 'JJ' && !replaced.includes(word)){
           for(let c = 0; c < assCount; c++){
-            text = text.replace(new RegExp(word, 'g'), word + " " + replacement);
+            node.textContent = node.textContent.replace(new RegExp(word, 'g'), word + " " + replacement);
           }
 
           replaced.push(word);
       }
   }
-
-  div.innerHTML = text;
 }
 
-function onLoad(){
-  chrome.storage.sync.get(['count', 'onLoad'], result => {
-    if(result.onLoad){
-      assify(result.count);
+function replaceNodeText(nodes) {
+  for (let node of nodes) {
+    if(node.nodeType === Node.TEXT_NODE){
+      assifyNode(count, node)
+    }else if(node.nodeName !== 'STYLE' && (node.nodeType === Node.DOCUMENT_NODE || Node.ELEMENT_NODE)){
+      replaceNodeText(node.childNodes);
     }
-  });
+  }
 }
-
-onLoad();
