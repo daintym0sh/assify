@@ -22,7 +22,7 @@ import './popup.css';
     },
   };
 
-  function setupCounter(initialValue = 0) {
+  function setupCounter(initialValue = 1) {
 
     document.getElementById('counter').innerHTML = initialValue;
 
@@ -82,8 +82,8 @@ import './popup.css';
 
     counterStorage.get(count => {
       if (typeof count === 'undefined') {
-        counterStorage.set(0, () => {
-          setupCounter(0);
+        counterStorage.set(1, () => {
+          setupCounter(1);
         });
       } else {
         setupCounter(count);
