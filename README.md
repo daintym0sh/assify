@@ -10,7 +10,7 @@ My Chrome Ass Extension
 
 ## Install
 
-Pending Chrome Store Review 
+Run locally or install from the Chrome Store: https://chrome.google.com/webstore/detail/assify/obchckkdenijjofeelmdkkjejlcmgjdi/
 
 ## Contribution
 
